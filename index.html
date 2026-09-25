@@ -1,19 +1,24 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>あなたの仕事は何位？ AIに置き換わりやすい順 405職種｜絶滅職種図鑑</title>
 <meta name="description" content="職種名を入れると、AIに置き換わりやすい順の順位と置換指数がわかります。国の職業データ(JILPT)から絶滅職種図鑑が算出。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1116;--card:#151a21;--line:#2a313b;--ink:#ece7dc;--sub:#9aa3af;--y:#ffe600;--g:#7dff6b;--r:#ff5a4e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.75}
-main{max-width:620px;margin:0 auto;padding:22px 16px 60px}.brand{display:inline-block;background:var(--y);color:#0a0a0a;font-weight:900;padding:2px 12px;border-radius:4px;font-size:.9rem}
-h1{font-size:1.55rem;line-height:1.35;margin:14px 0 6px;font-weight:900}h1 b{color:var(--y)}.lead{color:var(--sub);font-size:.92rem;margin:0 0 18px}
-input{width:100%;font-size:1.1rem;padding:14px 14px;border-radius:10px;border:2px solid var(--line);background:#0a0d11;color:var(--ink);font-weight:700}
-input:focus{outline:none;border-color:var(--y)}.sug{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}.sug button,.hit button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:.88rem;cursor:pointer}
-.hit{display:flex;flex-direction:column;gap:6px;margin-top:10px}.hit button{border-radius:8px;text-align:left;font-size:1rem;padding:10px 12px}
-.res{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px}.res h2{margin:0 0 4px;font-size:1.25rem}
-.big{display:flex;gap:18px;align-items:flex-end;margin:10px 0 6px}.big div{flex:1}.big i{display:block;font-style:normal;font-size:2.6rem;font-weight:900;color:var(--y);line-height:1}.big u{text-decoration:none;color:var(--sub);font-size:.8rem}
-.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--r),#f0a000,var(--g));position:relative;margin:16px 0 4px}.bar span{position:absolute;top:-6px;width:4px;height:24px;background:#fff;border-radius:2px}
-.cap{display:flex;justify-content:space-between;color:var(--sub);font-size:.75rem}.say{margin:12px 0 0;font-size:.95rem}.near{margin:14px 0 0;padding:0;list-style:none;font-size:.9rem}.near li{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:6px 2px}.near li.me{color:var(--y);font-weight:800}
-h3{font-size:1rem;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}p,li{font-size:.92rem}.note{color:var(--sub);font-size:.82rem}a{color:var(--y)}
+:root{--bg:#EFE4CC;--card:#F4ECDA;--line:#B9A57E;--ink:#1F1B16;--sub:#6B5F50;--y:#B3261E;--p2:#E4D5B3;--mn:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg) radial-gradient(130% 70% at 50% 0%,#F4ECDA 0%,#EFE4CC 60%,#E6D8B8 100%) fixed;color:var(--ink);font-family:"Noto Sans JP","Hiragino Sans",system-ui,sans-serif;font-weight:500;line-height:1.8}
+main{max-width:620px;margin:0 auto;padding:22px 16px 60px}
+.brand{display:flex;flex-direction:column;border-bottom:2px solid var(--ink);padding-bottom:10px;font-family:var(--mn);font-weight:800;font-size:1.35rem;letter-spacing:.04em;line-height:1.3}
+.brand:before{content:"OFFICE OF WORKFORCE HERITAGE";font-weight:600;font-size:.62rem;letter-spacing:.14em;color:var(--sub)}
+h1{font-family:var(--mn);font-size:1.75rem;line-height:1.35;margin:18px 0 6px;font-weight:800}h1 b{color:var(--y)}.lead{color:var(--sub);font-size:.92rem;margin:0 0 18px}
+input{width:100%;font-size:1.1rem;padding:14px;border-radius:0;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-weight:700;font-family:inherit}
+input:focus{outline:2px solid var(--y);outline-offset:2px}.sug{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}.sug button,.hit button{background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:0;padding:6px 12px;font-size:.88rem;cursor:pointer;font-family:inherit}
+.sug button:hover,.hit button:hover{border-color:var(--ink)}
+.hit{display:flex;flex-direction:column;gap:6px;margin-top:10px}.hit button{text-align:left;font-size:1rem;padding:10px 12px;background:var(--card)}
+.res{background:var(--card);border:2px solid var(--ink);outline:1px solid var(--ink);outline-offset:-7px;padding:22px;margin-top:18px}.res h2{margin:0 0 4px;font-size:1.3rem;font-family:var(--mn);font-weight:800}
+.big{display:flex;gap:18px;align-items:flex-end;margin:10px 0 6px}.big div{flex:1}.big i{display:block;font-style:normal;font-family:var(--mn);font-size:2.8rem;font-weight:800;color:var(--y);line-height:1}.big u{text-decoration:none;color:var(--sub);font-size:.8rem}
+.bar{height:10px;background:linear-gradient(90deg,var(--y),#D9C7A0 60%,var(--p2));position:relative;margin:16px 0 4px;border:1px solid var(--line)}.bar span{position:absolute;top:-7px;width:3px;height:22px;background:var(--ink)}
+.cap{display:flex;justify-content:space-between;color:var(--sub);font-size:.75rem}.say{margin:12px 0 0;font-size:.95rem}.near{margin:14px 0 0;padding:0;list-style:none;font-size:.9rem}.near li{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:6px 2px}.near li.me{color:var(--y);font-weight:700}
+h3{font-family:var(--mn);font-weight:800;font-size:1.05rem;margin:30px 0 8px;border-bottom:1px solid var(--ink);padding-bottom:6px}p,li{font-size:.92rem}.note{color:var(--sub);font-size:.82rem}a{color:var(--y)}
 </style></head><body><main>
 <span class="brand">絶滅職種図鑑</span>
 <h1>あなたの仕事は、<b>何位</b>？</h1>
