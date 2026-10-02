@@ -3,7 +3,8 @@
 --mn:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;--gap:16px}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--bg) radial-gradient(130% 70% at 50% 0%,#F4ECDA 0%,#EFE4CC 60%,#E6D8B8 100%) fixed;color:var(--ink);
+html{background:#E9DCBE}
+body{margin:0;min-height:100vh;background:#E9DCBE radial-gradient(140% 60% at 50% 0%,#F4ECDA 0%,#EFE4CC 55%,#E9DCBE 100%) no-repeat;background-size:100% max(100vh,1400px);color:var(--ink);
 font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans CJK JP","Noto Sans JP",system-ui,sans-serif;font-weight:500;font-size:16px;line-height:1.7;overflow-wrap:anywhere}
 main{max-width:640px;margin:0 auto;padding:0 16px 48px}
 a{color:var(--vm)}
@@ -217,3 +218,101 @@ details.bkd .bk{margin:0;border:0;padding:10px 2px 0}
 details.bkd summary{position:relative;display:block;padding:8px 40px 8px 14px}details.bkd summary::after{position:absolute;right:14px;top:50%;transform:translateY(-50%);margin:0}details.bkd .sm{display:block}
 
 .topnote{border:0;padding:0;margin:6px 0 0;font-size:14px;font-weight:700;color:var(--sub)}.topnote::before{content:'PR';display:inline-block;margin-right:8px;padding:0 6px;background:var(--ink);color:var(--on-vm);font-weight:800;letter-spacing:.06em}
+
+/* ===== v3.1 ===== */
+/* 分布帯(405本の細い棒) */
+.dist{margin:12px 0 0}
+.dbar{position:relative;height:44px;background:var(--p2);border:1px solid var(--line);overflow:visible}
+.dbar img{display:block;width:100%;height:100%}
+.dbar .me{position:absolute;top:-7px;bottom:-7px;width:4px;margin-left:-2px;background:var(--vm)}
+.dist figcaption{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--sub);line-height:1.5;margin-top:6px}
+/* 作業の横棒 */
+.tl li{grid-template-columns:30px 1fr}
+.tl .tn{grid-column:2}
+.tbar{grid-column:2;display:block;height:8px;background:var(--p2);border:1px solid var(--line);margin:4px 44px 0 0;position:relative}
+.tbar i{display:block;height:100%}.tbar.down i{background:var(--vm)}.tbar.stay i{background:var(--ink)}
+.tl .tp{position:absolute;right:0;margin-top:-4px;font-size:14px;color:var(--sub)}
+.tl li{position:relative}
+/* 標本画の枠(画像が無ければ出さない) */
+.specimen{margin:14px 0 0;border:2px solid var(--ink);outline:1px solid var(--ink);outline-offset:-6px;background:var(--card);padding:10px}.specimen img{display:block;width:100%;height:auto}
+/* 地図(散布図) */
+.scat{position:relative}
+.scat svg{display:block;width:100%;height:auto;background:var(--card);border:1px solid var(--line)}
+.scat .fr{fill:none;stroke:var(--line);stroke-width:1}.scat .ax{stroke:var(--line);stroke-width:1;stroke-dasharray:3 3}
+.scat circle{fill:#6B5F50;opacity:.55;cursor:pointer}.scat circle.b1{fill:#6B5F50}.scat circle.b3{fill:#8E8167}
+.scat circle.sel{fill:var(--vm);opacity:1;r:6}
+.scat .qn{font-size:14px;font-weight:700;fill:var(--ink);font-family:inherit}.scat .at{font-size:13px;fill:var(--sub)}
+.scat-tip{margin-top:8px;padding:8px 12px;border:1px solid var(--ink);background:var(--card);font-size:15px;line-height:1.5;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.scat-tip a{font-weight:800;display:inline-flex;align-items:center;min-height:44px}
+.below{margin-top:18px}
+#out:not(:empty)~.below .hdef{display:none}
+/* 予想してから見る・朱印 */
+.guess{border:2px solid var(--ink);background:var(--card);padding:14px;margin-top:16px;text-align:center}
+.guess p{margin:0 0 8px;font-weight:800;line-height:1.5}.guess .gb{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.guess button{min-height:52px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-size:1.05rem;font-weight:800;font-family:inherit;cursor:pointer}
+.guess .skip{border:0;text-decoration:underline;color:var(--sub);font-size:15px;margin-top:6px;min-height:44px;width:100%}
+.guessres{margin:14px 0 0;font-weight:800;font-size:15px;border-left:3px solid var(--vm);padding-left:10px}
+.card{position:relative}
+.stamp{position:absolute;right:14px;top:12px;width:56px;height:56px;pointer-events:none;opacity:.9}
+.stamp.go{animation:stampin .35s ease-out}
+@keyframes stampin{0%{transform:scale(1.9) rotate(-8deg);opacity:0}60%{transform:scale(.94) rotate(0)}100%{transform:scale(1);opacity:.9}}
+@media (prefers-reduced-motion:reduce){.stamp.go{animation:none}html{scroll-behavior:auto}}
+/* ===== PC ===== */
+@media(min-width:700px){
+ .toc{flex-wrap:wrap;margin:18px 0 0;padding:0;overflow:visible}
+ .fchips{flex-wrap:wrap;margin:8px 0 0;padding:0;overflow:visible}
+}
+@media(min-width:1100px){
+ main{max-width:1160px}
+ main>*{max-width:680px;margin-left:auto!important;margin-right:auto!important}
+ main>.hd,main>.bleed{max-width:1160px}
+ main>.pg{max-width:1088px}
+ .pg{display:grid;grid-template-columns:minmax(0,680px) 360px;column-gap:48px;justify-content:center}
+ .pg>*{grid-column:1}
+ .pg>.sidecol{grid-column:2;grid-row:1 / span 40;position:sticky;top:16px;align-self:start;margin-top:16px}
+ .pg>.sidecol .card{margin-top:0}
+ .rn{font-size:4.4rem}
+ .scat svg{max-height:640px}
+ h1{font-size:2rem}
+}
+
+.tl li{grid-template-columns:30px 1fr auto;align-items:start}
+.tl li::before{grid-row:1 / span 2}
+.tl .tn{grid-column:2;grid-row:1}
+.tl .tp{grid-column:3;grid-row:1;position:static;margin:0;align-self:start;white-space:nowrap}
+.tbar{grid-column:2 / 4;grid-row:2;margin:4px 0 0}
+.dbar{height:52px}
+
+/* ===== v3.1b ===== */
+.stamp{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border:3px double var(--vm);border-radius:50%;color:var(--vm);font-family:var(--mn);font-weight:800;font-size:1.05rem;letter-spacing:.04em;background:transparent;transform:rotate(-8deg)}
+.dist .dc{flex:1;text-align:center;font-size:14px}
+.dist.wide{display:none}
+.scat .qn{font-size:15px}
+.scat circle.me{fill:var(--vm);opacity:1;r:7;stroke:var(--card);stroke-width:2}
+.scat .melab{font-size:15px;font-weight:800;fill:var(--vm);paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.qcards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qcards li{border:1px solid var(--ink);background:var(--card);padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.qcards b{font-size:15px;line-height:1.4}.qcards span{font-size:1.3rem;font-family:var(--mn);font-weight:800;color:var(--vm)}
+.scat svg,.scat .scat-tip{display:none}
+.scat .def{margin-top:10px}
+.two{display:block}
+@media(min-width:700px){
+ .scat svg{display:block}.scat .qcards{display:none}.scat .scat-tip:not([hidden]){display:flex}
+}
+@media(min-width:1100px){
+ main>.two{max-width:1160px;display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
+ .two>.sec{margin-top:30px}
+ .pg>.sidecol .cta{display:none}
+ .pg>.sidecol .dist{display:block}
+ .pg>.dist.wide{display:block;margin-top:14px}
+ .pg>.sidecol .dist .dc{display:none}
+}
+
+/* ===== v3.1c ===== */
+.quad{margin:8px 0 0;font-size:15px;line-height:1.5}.quad b{color:var(--vm)}
+.pcv{display:none}.mbv{display:inline}
+.note.mbv{display:block}.note.pcv{display:none}
+@media(min-width:700px){.pcv{display:inline}.mbv{display:none}.note.pcv{display:block}.note.mbv{display:none}}
+.qcards li.mine{border:3px solid var(--vm);background:#F8EFE0}
+.qcards li.mine::after{content:"あなたの職種はここ";font-size:14px;font-weight:800;color:var(--vm)}
+.qcards b{word-break:keep-all;overflow-wrap:normal}

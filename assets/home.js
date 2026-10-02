@@ -27,18 +27,45 @@ const q=$('#q'),hitEl=$('#hit'),out=$('#out');
 const esc=v=>v.replace(/[<>&"]/g,'');
 const chip=(b,v)=>b?`<span class="bc${b===1?' hot':''}">${v} ${BS[b-1]}</span>`:'';
 function ga(n,p){try{if(window.gtag)gtag('event',n,p)}catch(e){}}
+const GUESS=['高い','中くらい','低い'];
+function ask(d){
+  hitEl.innerHTML='';q.value=d.j;
+  if(!d.b){show(d,{});return}
+  out.innerHTML='<div class="guess" id="guess"><p>'+d.j+'の絶滅リスクは、405職種の中でどのあたり?</p><div class="gb">'+GUESS.map((g,i)=>'<button type="button" data-g="'+(i+1)+'">'+g+'</button>').join('')+'</div><button type="button" class="skip" data-g="0">予想せずに見る</button></div>';
+  requestAnimationFrame(()=>{const g=$('#guess');if(g)g.scrollIntoView({behavior:'smooth',block:'center'})});
+  window._pending=d;
+}
 async function show(d,o={}){
   hitEl.innerHTML='';q.value=d.j;
   const id=String(d.r).padStart(3,'0');
   try{
     const res=await fetch('/d/'+id+'.json');const j=await res.json();
     out.innerHTML=j.html;window.zkShareReady&&zkShareReady(out);
+    const card=out.querySelector('.card');
+    if(card){const im=document.createElement('div');im.textContent='記録';im.setAttribute('aria-hidden','true');im.className='stamp';card.appendChild(im);requestAnimationFrame(()=>im.classList.add('go'))}
+    if(o.guess){const ok=o.guess===d.b;const p=document.createElement('p');p.className='guessres';const dir=ok?'(予想どおりでした)':(d.b<o.guess?'(予想より高い結果でした)':'(予想より低い結果でした)');const mk=card&&card.querySelector('details.mk summary');const edge=mk&&/境目あたり|まとめ方で帯が変わる/.test(mk.textContent)?' 境目あたり、または合わせ方で帯が変わる職種なので、隣の帯もありえます。':'';p.textContent='あなたの予想: '+GUESS[o.guess-1]+' / 結果: '+GUESS[d.b-1]+dir+edge;if(card)card.after(p);ga('guess',{job_name:d.j,guess:GUESS[o.guess-1],result:GUESS[d.b-1],match:ok})}
   }catch(e){out.innerHTML='<p class="msg">結果を読み込めませんでした。<a href="/j/'+id+'.html">'+d.j+'のページ</a>を開いてください。</p>';}
   document.title=d.j+'の絶滅リスク(推定)｜絶滅職種図鑑';
+  markMap(d);
   history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(d.j));
   if(o.scroll!==false)requestAnimationFrame(()=>{const r=$('#res');if(r)r.scrollIntoView({behavior:o.instant?'auto':'smooth',block:'start'})});
   ga('job_lookup',{job_name:d.j,job_band:d.b?BS[d.b-1]:''});
 }
+function markMap(d){const svg=document.querySelector('#scat svg');if(!svg)return;
+  svg.querySelectorAll('circle.me').forEach(c=>c.classList.remove('me'));svg.querySelectorAll('.melab').forEach(t=>t.remove());
+  document.querySelectorAll('.qcards li.mine').forEach(l=>l.classList.remove('mine'));
+  const c=svg.querySelector('circle[data-r="'+d.r+'"]');if(!c)return;c.classList.add('me');svg.appendChild(c);
+  const li=document.querySelector('.qcards li[data-q="'+c.dataset.q+'"]');if(li)li.classList.add('mine');
+  const NS='http://www.w3.org/2000/svg',t=document.createElementNS(NS,'text');t.setAttribute('class','melab');t.textContent='あなた: '+d.j;svg.appendChild(t);
+  const x=+c.getAttribute('cx'),y=+c.getAttribute('cy');
+  const names=[...svg.querySelectorAll('.qn')].map(n=>{try{return n.getBBox()}catch(e){return null}}).filter(Boolean);
+  const cand=[[x+12,y+5,'start'],[x-12,y+5,'end'],[x+12,y+26,'start'],[x-12,y+26,'end'],[x+12,y-12,'start'],[x-12,y-12,'end'],[x,y+34,'middle'],[x,y-18,'middle']];
+  let best=cand[0];
+  for(const p of cand){t.setAttribute('x',p[0]);t.setAttribute('y',p[1]);t.setAttribute('text-anchor',p[2]);let bb;try{bb=t.getBBox()}catch(e){break}
+    const inside=bb.x>=0&&bb.x+bb.width<=640&&bb.y>=0&&bb.y+bb.height<=440;
+    const hit=names.some(n=>bb.x<n.x+n.width&&bb.x+bb.width>n.x&&bb.y<n.y+n.height&&bb.y+bb.height>n.y);
+    if(inside&&!hit){best=p;break}}
+  t.setAttribute('x',best[0]);t.setAttribute('y',best[1]);t.setAttribute('text-anchor',best[2])}
 let all=false,composing=false;
 const CATS=['事務','販売','運転','介護','看護','医療','調理','製造','建設','教員','エンジニア','営業','公務員','美容','農業'];
 function search(v,final){
@@ -59,14 +86,15 @@ function submit(){
   const v=q.value,k=norm(v);if(!k)return;
   const r=find(k);const ex=r.list.find(d=>(r.ts||[]).includes(norm(d.j)));
   const pick=ex||(r.list.length>=1?r.list[0]:null);
-  if(pick&&(ex||r.list.length===1||!composing)){show(pick,{});q.blur()}else{all=false;search(v,true)}
+  if(pick&&(ex||r.list.length===1||!composing)){ask(pick);q.blur()}else{all=false;search(v,true)}
 }
 q.addEventListener('compositionstart',()=>composing=true);
 q.addEventListener('compositionend',()=>{composing=false;search(q.value,true)});
 q.addEventListener('input',()=>{all=false;if(out.innerHTML&&q.value!==(out.querySelector('.jn')||{}).textContent){out.innerHTML='';document.title=HOME_TITLE;history.replaceState(null,'',location.pathname)}search(q.value,!composing)});
 $('#find').addEventListener('submit',e=>{e.preventDefault();if(composing)return;submit()});
 document.addEventListener('click',e=>{
-  const b=e.target.closest('button[data-r],a[data-r]');if(b){e.preventDefault();const d=D.find(x=>x.r===+b.dataset.r);if(d){show(d);q.blur()}return}
+  const gb=e.target.closest('button[data-g]');if(gb){const d=window._pending;if(d){const g=+gb.dataset.g;show(d,{guess:g||0})}return}
+  const b=e.target.closest('button[data-r],a[data-r]');if(b){e.preventDefault();const d=D.find(x=>x.r===+b.dataset.r);if(d){ask(d);q.blur()}return}
   const m=e.target.closest('button[data-more]');if(m){all=true;search(q.value,true);return}
   const c=e.target.closest('button[data-q]');if(c){q.value=c.dataset.q;all=false;search(c.dataset.q,true)}});
 function fromHash(){
@@ -75,4 +103,14 @@ function fromHash(){
   if(d)show(d,{instant:true})}
 window.addEventListener('hashchange',fromHash);
 fromHash();
+/* 散布図: 押した位置に近い点を選び、職種へのリンクを出す */
+const sc=document.getElementById('scat');
+if(sc){const svg=sc.querySelector('svg'),tip=document.getElementById('scat-tip');let sel=null;
+  const pick=(ev)=>{const r=svg.getBoundingClientRect(),vb=svg.viewBox.baseVal,k=Math.min(r.width/vb.width,r.height/vb.height),ox=(r.width-vb.width*k)/2,oy=(r.height-vb.height*k)/2;
+    const x=(ev.clientX-r.left-ox)/k,y=(ev.clientY-r.top-oy)/k;let best=null,bd=1e9;
+    svg.querySelectorAll('circle').forEach(c=>{const dx=+c.getAttribute('cx')-x,dy=+c.getAttribute('cy')-y,dd=dx*dx+dy*dy;if(dd<bd){bd=dd;best=c}});
+    if(best&&bd<30*30){if(sel)sel.classList.remove('sel');sel=best;best.classList.add('sel');
+      document.getElementById('st-n').textContent=best.dataset.n;document.getElementById('st-v').textContent='絶滅リスク(推定) '+best.dataset.v+'/100';
+      const a=document.getElementById('st-a');a.href='/j/'+String(best.dataset.r).padStart(3,'0')+'.html';tip.hidden=false;ga('map_pick',{job_name:best.dataset.n})}};
+  svg.addEventListener('click',pick);}
 })();
