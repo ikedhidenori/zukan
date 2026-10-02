@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /_backup-index-20261002.html
 
 Sitemap: https://zukan.page/sitemap.xml

@@ -1,65 +1,64 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>順位(置換指数)の算出方法｜絶滅職種図鑑</title>
-<meta name="description" content="405職種の順位と置換指数が、JILPT 職業情報データベースの16項目からどう算出されているかの説明です。">
-<link rel="canonical" href="https://zukan.page/method.html">
-<meta property="og:type" content="article"><meta property="og:site_name" content="絶滅職種図鑑">
-<meta property="og:title" content="順位(置換指数)の算出方法｜絶滅職種図鑑">
-<meta property="og:description" content="405職種の順位と置換指数が、JILPT 職業情報データベースの16項目からどう算出されているかの説明です。">
-<meta property="og:url" content="https://zukan.page/method.html"><meta property="og:image" content="https://zukan.page/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg"><meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="apple-mobile-web-app-title" content="絶滅職種図鑑"><meta name="application-name" content="絶滅職種図鑑">
-<link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="#EFE4CC">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0GQ69F0MT"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y0GQ69F0MT',{allow_google_signals:false,allow_ad_personalization_signals:false});</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#EFE4CC;--card:#F4ECDA;--line:#B9A57E;--ink:#1F1B16;--sub:#6B5F50;--y:#B3261E;--p2:#E4D5B3;--mn:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif}
-*{box-sizing:border-box}body{margin:0;background:var(--bg) radial-gradient(130% 70% at 50% 0%,#F4ECDA 0%,#EFE4CC 60%,#E6D8B8 100%) fixed;color:var(--ink);font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans CJK JP","Noto Sans JP",system-ui,sans-serif;font-weight:500;line-height:1.8;-webkit-text-size-adjust:100%}
-main{max-width:620px;margin:0 auto;padding:22px 16px 60px}
-.brand{display:flex;align-items:center;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:10px;font-family:var(--mn);font-weight:800;font-size:1.35rem;letter-spacing:.04em;line-height:1.3}
-.brand img{width:54px;height:54px}.brand span{display:flex;flex-direction:column}.brand small{font-weight:800;font-size:.82rem;letter-spacing:.08em;color:var(--sub)}
-h1{font-family:var(--mn);font-size:1.75rem;line-height:1.35;margin:18px 0 6px;font-weight:800}h1 b{color:var(--y);white-space:nowrap}.lead{color:var(--sub);font-size:.92rem;margin:0 0 10px}
-.pr{display:inline-block;font-size:.82rem;color:var(--sub);border:1px solid var(--line);padding:1px 8px;margin:0 0 12px}
-label.q{display:block;font-size:.85rem;font-weight:700;margin:0 0 4px}
-input{width:100%;font-size:1.1rem;padding:14px;border-radius:0;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-weight:700;font-family:inherit;-webkit-appearance:none}
-input:focus{outline:2px solid var(--y);outline-offset:2px}
-.hit{display:flex;flex-direction:column;gap:6px;margin-top:8px}.hit:empty{margin:0}
-.hit button,.sug button,.alt button{min-height:44px;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:0;padding:8px 12px;font-size:1rem;cursor:pointer;font-family:inherit;text-align:left}
-.hit button:hover,.sug button:hover,.alt button:hover{border-color:var(--ink)}
-.hit .more{background:transparent;border-style:dashed;color:var(--sub);font-size:.9rem}
-.hit .msg{margin:4px 0 0;font-size:.9rem;color:var(--ink)}.hit .msg small{display:block;color:var(--sub);font-size:.82rem}
-.alt{display:flex;flex-wrap:wrap;gap:8px}.alt button{font-size:.92rem}
-.sugl{font-size:.82rem;color:var(--sub);margin:14px 0 4px}
-.sug{display:flex;flex-wrap:wrap;gap:8px}.sug button{background:transparent;font-size:.9rem}
-.res{background:var(--card);border:2px solid var(--ink);outline:1px solid var(--ink);outline-offset:-7px;padding:22px;margin-top:18px;scroll-margin-top:12px}.res h2{margin:0 0 4px;font-size:1.3rem;font-family:var(--mn);font-weight:800;line-break:strict;text-wrap:balance}
-.big{display:flex;flex-wrap:wrap;gap:18px;row-gap:10px;align-items:flex-start;margin:10px 0 6px}.big div{flex:1}.big i{display:block;font-style:normal;font-family:var(--mn);font-size:2.8rem;font-weight:800;color:var(--y);line-height:1.05}.big i.n{color:var(--ink)}.nw{white-space:nowrap}.res:focus{outline:1px solid var(--ink);outline-offset:-7px}.res:focus-visible{box-shadow:0 0 0 2px var(--y)}.big u{display:block;text-decoration:none;color:var(--sub);font-size:.82rem;line-height:1.5;margin-top:4px}
-.bar{height:10px;background:var(--p2);position:relative;margin:16px 0 4px;border:1px solid var(--line)}.bar span{position:absolute;top:-7px;width:4px;height:22px;background:var(--y)}
-.cap{display:flex;flex-wrap:wrap;justify-content:space-between;column-gap:1em;color:var(--sub);font-size:.82rem}.cap span{white-space:nowrap}.cap span:last-child{margin-left:auto}.say{margin:12px 0 0;font-size:.95rem}.src{line-break:strict;margin:8px 0 0;font-size:.82rem;color:var(--sub)}
-.near{margin:14px 0 0;padding:0;list-style:none;font-size:.9rem}.near li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:6px 2px}.near li.me{color:var(--y);font-weight:700}.near li span:last-child{white-space:nowrap}.near li{line-break:strict}.near li span:first-child{text-wrap:pretty}
-.art{margin:14px 0 0;font-size:.92rem}
-h3{font-family:var(--mn);font-weight:800;font-size:1.05rem;margin:30px 0 8px;border-bottom:1px solid var(--ink);padding-bottom:6px}p,li{font-size:.92rem}.note{color:var(--sub);font-size:.85rem}a{color:var(--y)}
-.links a{display:inline-block;padding:10px 0}
-.ad{margin-top:18px;border:1px solid var(--line);background:#F3EAD6;padding:14px 16px}.ad .lb{display:inline-block;font-size:.82rem;border:1px solid var(--sub);color:var(--sub);padding:0 6px;margin-bottom:6px}.ad h3{margin:0 0 6px;font-family:var(--mn);font-size:1rem;border:0;padding:0}.ad p{margin:8px 0;font-size:.9rem}.ad a{font-weight:700}.ad small{color:var(--sub);font-size:.82rem}.ad img{border:0;width:1px;height:1px;position:absolute}
-.foot{margin-top:34px;border-top:1px solid var(--line);padding-top:10px}.foot p{margin:2px 0;font-size:.82rem;color:var(--sub)}.foot a{color:var(--sub)}
-.crumb{font-size:.82rem;color:var(--sub);margin:12px 0 0}.crumb a{color:var(--sub)}.near a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}.near li.me a{border:0}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.chips button{min-height:40px;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:4px 10px;font-family:inherit;font-size:.9rem;cursor:pointer}.jl{list-style:none;margin:0;padding:0}.jl li{border-top:1px solid var(--line);padding:0}.jl li a{display:flex;justify-content:space-between;gap:10px;padding:10px 2px;text-decoration:none;color:var(--ink);line-break:strict}.jl li a span:last-child{white-space:nowrap;color:var(--sub);font-size:.85rem}.cnt{font-size:.85rem;color:var(--sub);margin:6px 0}.back{margin:18px 0 0}.back a{display:inline-block;padding:10px 0}.tk{margin:0;padding-left:1.3em}.tk li{margin:4px 0;line-break:strict}.tk small{color:var(--sub);font-size:.85rem;white-space:nowrap}.gh{font-size:.88rem;font-weight:700;margin:14px 0 4px}.bars{list-style:none;margin:0;padding:0}.bars li{margin:0 0 10px}.bars .nm{display:flex;justify-content:space-between;gap:8px;font-size:.88rem;line-height:1.5}.bars .nm span:last-child{white-space:nowrap;color:var(--sub);font-size:.82rem}.tr{position:relative;height:8px;background:var(--p2);border:1px solid var(--line);margin:4px 0 0}.tr i{display:block;height:100%;background:var(--ink)}.tr b{position:absolute;top:-4px;width:2px;height:14px;background:var(--y)}.two{display:grid;gap:0 18px}.two ul{margin:0}.pw{font-size:.92rem;margin:6px 0}.foot{margin-top:34px;border-top:1px solid var(--line);padding-top:10px}.foot p{margin:2px 0;font-size:.82rem;color:var(--sub)}.foot a{color:var(--sub)}.about h3{margin-top:26px}</style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://zukan.page/"}, {"@type": "ListItem", "position": 2, "name": "算出方法", "item": "https://zukan.page/method.html"}]}</script></head><body><main>
-<div class="brand"><img src="/mark.png" alt="" width="54" height="54"><span><small>二〇三五年 編纂室の標本記録</small>絶滅職種図鑑</span></div>
-<p class="crumb"><a href="/">ホーム</a> &gt; 算出方法</p>
-<h1>順位(置換指数)の算出方法</h1>
-<p class="lead">405職種の順位が、どんなデータからどう出ているかの説明です。</p>
-<h3>手順</h3>
-<ol><li>出典は、独立行政法人 労働政策研究・研修機構(JILPT)「職業情報データベース」IPD v7.00 の数値データです。下の16項目すべてに回答がそろう405職種を比べています。</li>
-<li>機械に近い指標7項目(慣習的、反復作業、同一作業の反復、機械やコンピュータによる仕事の自動化、厳密さ・正確さ、情報やデータを処理する、情報の文書化と記録を行う)の平均を出します。</li>
-<li>機械から遠い指標9項目(創造的に考える、独創性、複雑な問題解決、対人援助サービス、他者に対する支援とケアを行う、対立を解消させる・他者と交渉する、手腕の器用さ、全身を使って身体的な活動を行う、コンサルティングと他者へのアドバイスを行う)の平均を出します。</li>
-<li>前者から後者を引いた値が大きい順に並べたものが「405職種中◯位」です。置換指数は、1位(データ入力)を100とした相対値です。0やマイナスは、置き換わりにくい要素の方が多いことを表します。</li></ol>
-<h3>この推計の限界</h3>
-<ul><li>職業の作業の性質から見た「機械への近さ」の目安で、将来を保証するものではありません。規制、資格制度、景気、人手不足、技術の普及速度は計算に入れていません。</li>
-<li>同じ職業名でも、職場によって作業の中身は違います。</li></ul>
-<h3>職種ページのその他の項目</h3>
-<ul><li>「スキルが近く、置き換わりにくい側にある職種」は、スキルと知識の値を項目ごとに405職種で標準化し、コサイン類似度が高い順に並べたものです。順位が50位以上置き換わりにくい側の職種に限っています。</li>
-<li>「働き方の特徴」は、仕事の性質の項目のうち405職種の平均から標準偏差で0.7以上離れているものです。</li></ul>
-<p class="back"><a href="/">順位を検索して調べる</a> / <a href="/j/">職種一覧(405職種)</a></p>
-<footer class="foot"><p>順位は推定です。 <a href="/method.html">算出方法</a> / <a href="/about.html">運営者・プライバシー・広告について</a></p><p>出典: 独立行政法人労働政策研究・研修機構(JILPT)作成 職業情報データベース 解説系ダウンロードデータ ver.7.00(IPD_description_v7_00_01.xlsx)・簡易版数値系ダウンロードデータ ver.7.00(IPD_numeric_v7_00.xlsx) 職業情報提供サイト(job tag)より2026年5月15日にダウンロード(https://shigoto.mhlw.go.jp/User/download)を加工して作成</p></footer>
-</main></body></html>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="zk-version" content="v2.7 (rubric v2.5)|2026-10-02|final"><title>「絶滅リスク(推定)」の見かた・限界｜絶滅職種図鑑</title><meta name="description" content="絶滅リスク(推定)の意味、値と帯の読み方、算出方法、信用できる範囲と限界。仕事がなくなる確率ではありません。"><link rel="canonical" href="https://zukan.page/method.html"><meta property="og:type" content="article"><meta property="og:site_name" content="絶滅職種図鑑"><meta property="og:title" content="「絶滅リスク(推定)」の見かた・限界｜絶滅職種図鑑"><meta property="og:description" content="絶滅リスク(推定)の意味、値と帯の読み方、算出方法、信用できる範囲と限界。仕事がなくなる確率ではありません。"><meta property="og:url" content="https://zukan.page/method.html"><meta property="og:image" content="https://zukan.page/og-site.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content=""><meta property="og:locale" content="ja_JP"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image:alt" content=""><meta name="apple-mobile-web-app-title" content="絶滅職種図鑑"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="#EFE4CC"><script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0GQ69F0MT"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Y0GQ69F0MT',{allow_google_signals:false,allow_ad_personalization_signals:false});</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/site.css"></head><body><main><header class="hd"><a class="tt" href="/" aria-label="絶滅職種図鑑 トップ"><b>絶滅職種図鑑</b><small>二〇三五年 編纂室の標本記録</small></a><a class="nv" href="/j/">全職種 ›</a></header><nav class="crumb" aria-label="パンくず"><a href="/">ホーム</a><span>›</span><span>算出方法</span></nav>
+<h1 style="font-size:1.5rem">「絶滅リスク(推定)」の見かた</h1>
+<div class="limit" role="note"><p><b>先に、限界を3つ</b></p><ul>
+<li>この値は、2つの物差しを決めた規則でまとめた目安です。まとめた値や順番そのものを確かめた研究はありません。</li>
+<li>判定は AI が行い、人の専門家による確認はしていません。代わりに26職種を公的な資料と照らし、明らかな食い違いがないことを確かめました。</li>
+<li>過去(2015→2020年)の職業ごとの就業者の増減とは、ほとんど関係がありませんでした。仕事が減る順の予測ではありません。</li></ul></div>
+<div class="about">
+<h2>何を表しているか</h2>
+<p class="def">絶滅リスク(推定)は、作業が生成AIや機械で減りやすいかを、405職種の中の位置(100に近いほど減りやすい側)で示した目安です。仕事がなくなる確率ではありません。</p>
+<p>絶滅リスク(推定)は、その仕事の作業が、生成AIで時間が減りやすいか、機械・自動化に置き換わりやすいかを表した目安です。</p>
+<p>2つの物差しがあります。</p>
+<ul><li><b>生成AIの側</b>: その仕事の作業のうち、生成AI(ChatGPT のように文章・画像・音声・プログラムを扱う AI)を使うと、同じ出来のまま時間が半分以下になりそうな作業がどれだけ多いか。</li>
+<li><b>機械化の側</b>: 決まった手順のくり返し、機械のペースに合わせる作業、乗り物の運転などが多く、機械・自動化に置き換わりやすいか。日本の職業データから作った値と、海外(米国)の研究の自動化確率を、半分ずつ合わせています。置き換わりやすいことは、仕事がなくなることではありません。</li></ul>
+<p>絶滅リスクの値と帯は、この2つを決めた規則でまとめた目安です。「絶滅」は、この図鑑の物語の言葉です。作業が減っても、仕事は形を変えて残ることが多いと考えられています(国際労働機関 ILO は、生成AIで最も起こりやすいのは「仕事の変容」だとしています)。</p>
+<h2>値と3つの帯</h2>
+<p>帯は405職種を3等分したもので、同じ帯の中にも差があります。</p>
+<ul class="rows plain"><li><b>高い(67〜100)</b>: 405職種の中で、生成AIで時間が減りやすい、または機械・自動化に置き換わりやすい作業が多い側です。</li>
+<li><b>中くらい(34〜66)</b>: 減りやすい作業と、人が持つ作業が混ざっています。</li>
+<li><b>低い(0〜33)</b>: 生成AIでも機械でも減りにくい作業が中心です。無関係という意味ではありません。</li></ul>
+<p>値が0の職種には「最も低い側」、100の職種には「最も高い側」と添えます(1・2・98・99 には添えません)。</p>
+<h2>印(小さな注記)</h2>
+<ul><li><b>境目あたり</b>: 値が帯の境(33と34、66と67)の近くにある職種です。判定のゆらぎで隣の帯になることがあります。</li>
+<li><b>まとめ方で帯が変わる</b>: 2つの物差しのまとめ方を変えると、隣の帯になる職種です。</li>
+<li><b>資料・データの注記</b>: 外部の資料や元のデータに、値と食い違う点がある職種です(例: パイロットの機械化の側)。</li></ul>
+<h2>減りやすい理由</h2>
+<p>職種ごとに、2つの物差しの両方の値から理由を書きます。「生成AI」「機械・自動化」「生成AIと機械・自動化の両方」「どちらも小さめ」のいずれかです。機械・自動化が理由のときは、効いている性質(乗り物の運転・操縦、同じ作業のくり返し、機械のペースに合わせる作業、データの処理と記録)を最大2つ添えます。</p>
+<h2>値より、内訳を見てください</h2>
+<p>生成AIの側は、作業を3つに分けて見せます。</p>
+<ul><li><b>大きく減る作業</b>: 生成AIを自分で使うだけで、時間が半分以下になりそう。例: 書類の作成、調べもの、翻訳、資料づくり。</li>
+<li><b>一部が減る作業</b>: 会社のシステムとつなぐ仕組みがあれば減る作業、または下書き・確認は減るが最後の判断や人とのやりとりが残る作業。例: 電話の取次、伝票の登録、専門的な相談への助言、承認。</li>
+<li><b>減らない作業</b>: 体を使う作業、人の体に触れるケア、その場の対話や交渉、現場での確認。例: 調理、介助、教室での授業そのもの。</li></ul>
+
+<h2>注意して読んでください</h2>
+<ul><li>生成AIの側は、作業をしている人の多さと仕事での大切さで重みを付けています。作業ごとの時間は元のデータにありません。</li>
+<li>機械化の側の海外の研究は2013年の米国のもので、日本の今の機械(セルフレジ・自動応答・自動運転)の普及は直接は入っていません。小売の店員は日本のデータでは低く、海外の研究では高く出ます。</li>
+<li>資格が必要な独占業務、法律上の責任、導入の費用は計算に入れていません。「技術的にできるか」を見ています。</li>
+<li>判定は AI が行いました。人の専門家による確認はまだです。注目度の高い26職種を、官公庁や業界団体の資料と照らし合わせました。</li>
+<li>2026年10月時点の技術を前提にしています。</li></ul>
+<h2>どれくらい信用できるか</h2>
+<ul><li><b>生成AIの側</b>: 7,007の作業すべてを判定し、別の会社の AI にも300件を同じ基準で判定させ、89%が一致しました。国際機関 ILO の指標と並びがよく似ています。</li>
+<li><b>機械化の側</b>: オックスフォード大の研究、それを日本に当てはめた野村総合研究所の研究と同じ向きです(海外の研究を材料に含むので、独立の確認ではありません)。</li>
+<li><b>まとめた値</b>: 結果を見る前に決めた20職種の向きのうち、19職種が合っていました(予想の後に機械化の側の計算を2回直しているので、参考の値です)。2015〜2020年の国勢調査の職業別の就業者の増減とは、ほとんど関係がありませんでした(生成AIが広がる前の期間です)。</li></ul>
+<h2>見直しの約束</h2>
+<p>2025年国勢調査の公表時(2027年ごろ)と、生成AIの大きな変化のたびに、値を再計算します。再計算した日はこのページに記録します。現在の版: v2.7 (rubric v2.5)(計算日 2026-10-02)。</p>
+<h2>くわしい手順</h2>
+<details><summary>手順を開く</summary><div class="in"><ol>
+<li>JILPT の職業情報データベースを使いました。</li>
+<li><b>生成AIの側</b>: 職業ごとの作業(最大37件)を1件ずつ「大きく減る(1点)」「一部が減る(0.5点)」「減らない(0点)」に分け、実施率と重要度で重みを付けて平均しました(Eloundou ほか 2023 の基準を2026年向けに直したもの)。</li>
+<li><b>機械化の側</b>: 日本のデータでは、「くり返し」「機械のペースに合わせる作業」「データの処理と記録」「乗り物の運転・操縦」が多いほど高く、「手先の器用さと窮屈な姿勢」「独創性と芸術」「人の反応の理解・交渉・説得・世話」が要るほど低くなるように計算しました(Frey & Osborne 2017、Acemoglu & Autor 2011 の考え方)。これと、Frey & Osborne の自動化確率(日本の職業ごとに、最も近い米国の職業を1つ選んで対応)を、405職種の中の位置にして平均しました。海外の研究と対応がつかない職種(自衛官)は日本のデータだけです。</li>
+<li><b>まとめ方</b>: 2つをそれぞれ405職種の中の位置にし、「高いほう + 低いほうの1/4」で並べ直して、その位置を値にしました。高いほうを中心にしたのは「どちらか一方で大きく変わる仕事」を拾うため、低いほうを少し足したのは両方で減りやすい仕事を少し上にするためです。</li></ol></div></details>
+<details><summary>文献照合のやり方</summary><div class="in"><ul>
+<li>照合の前に「整合」「一部整合」「食い違い」「判定不能」の基準を決めました。</li>
+<li>資料は本文を開いて、引用する一文をそのまま写し、ページと取得日を記録しました。検索結果の要約は使っていません。</li>
+<li>判定は2つの AI(Claude と OpenAI の Codex)が別々に付け、一致の割合を出しました。</li>
+<li>10職種(士業4・医療4・獣医師・保育士)では、作業ごとの判定を、実態調査と1件ずつ照らしました。作業ごとの時間が分かる調査は少なく、半分以上は「判断できない」でした。</li></ul></div></details>
+<h2>出典</h2>
+<p>独立行政法人労働政策研究・研修機構(JILPT)作成 職業情報データベース 解説系ダウンロードデータ ver.7.00(IPD_description_v7_00_01.xlsx)・簡易版数値系ダウンロードデータ ver.7.00(IPD_numeric_v7_00.xlsx) 職業情報提供サイト(job tag)より2026年5月15日にダウンロード(https://shigoto.mhlw.go.jp/User/download)を加工して作成しました。JILPT・厚生労働省の見解ではありません。</p>
+<ul><li>Eloundou, T., Manning, S., Mishkin, P., &amp; Rock, D. (2023). GPTs are GPTs. arXiv:2303.10130.</li>
+<li>Gmyrek, P. ほか (2025). Generative AI and jobs. ILO Working Paper 140.</li>
+<li>Frey, C. B., &amp; Osborne, M. A. (2013/2017). The future of employment.</li>
+<li>Acemoglu, D., &amp; Autor, D. (2011). Skills, tasks and technologies. Handbook of Labor Economics, 4B.</li>
+<li>野村総合研究所 (2015年12月2日) 「日本の労働人口の49%が人工知能やロボット等で代替可能に」</li>
+<li>総務省統計局 国勢調査 (2015年・2020年) 抽出詳細集計 職業小分類別就業者数 (e-Stat)</li></ul>
+</div><footer class="foot"><p>値は推定です。<a href="/method.html">算出方法</a> / <a href="/about.html">運営者・プライバシー・広告について</a></p><p class="credit">出典: 独立行政法人労働政策研究・研修機構(JILPT)作成 職業情報データベース 解説系ダウンロードデータ ver.7.00(IPD_description_v7_00_01.xlsx)・簡易版数値系ダウンロードデータ ver.7.00(IPD_numeric_v7_00.xlsx) 職業情報提供サイト(job tag)より2026年5月15日にダウンロード(https://shigoto.mhlw.go.jp/User/download)を加工して作成</p></footer></main><div class="toast" id="toast" role="status" aria-live="polite" hidden></div><script src="/assets/common.js"></script></body></html>
