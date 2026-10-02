@@ -2,6 +2,8 @@
 (function(){
 var T=document.getElementById('toast');
 function toast(m){if(!T)return;T.textContent=m;T.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){T.hidden=true},2200)}
+function src(){var m=/[?&]utm_source=([^&]+)/.exec(location.search);return m?decodeURIComponent(m[1]):(/Instagram/i.test(navigator.userAgent)?'ig-inapp':'direct')}
+function adp(a){return {ad_program:a.dataset.ad,ad_rule:a.dataset.rule||'',job_name:a.dataset.job||'',placement:a.dataset.placement||'',seat_type:a.dataset.seat||'',source:src()}}
 function ga(n,p){try{if(window.gtag)gtag('event',n,p)}catch(e){}}
 function copy(t){
   if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(t).then(function(){toast('URLをコピーしました')},function(){fb(t)})}
@@ -14,7 +16,8 @@ function saveImg(img,name){
     var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},4000);toast('画像を保存しました');
   }).catch(function(){toast('画像を保存できませんでした')})}
 document.addEventListener('click',function(e){
-  var ad=e.target.closest('a[data-ad]');if(ad){ga('ad_click',{ad_program:ad.dataset.ad,ad_rule:ad.dataset.rule||'',job_name:ad.dataset.job||''});return}
+  var ad=e.target.closest('a[data-ad]');if(ad){ga('ad_click',adp(ad));return}
+  var sn=e.target.closest('a[data-sns]');if(sn){ga('sns_click',{platform:sn.dataset.sns,place:sn.dataset.place||''});return}
   var st=e.target.closest('a[data-seat]');if(st){ga('seat_click',{seat_kind:st.dataset.seat,to:st.querySelector('b')?st.querySelector('b').textContent:''})}
   var b=e.target.closest('[data-act]');if(!b)return;
   var s=b.closest('.share');if(!s)return;
@@ -27,6 +30,8 @@ document.addEventListener('click',function(e){
 /* Web Share API が使える端末では「共有する」を先頭に出す */
 function ready(root){if(navigator.share){[].forEach.call((root||document).querySelectorAll('.share'),function(s){s.classList.add('native');var n=s.querySelector('[data-act=native]');if(n)n.hidden=false})}}
 ready();window.zkShareReady=ready;
+/* 広告の表示計測(枠が画面に入ったとき1回) */
+try{var ads=document.querySelectorAll('.ad a[data-ad]');if(ads.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){ga('ad_view',adp(en.target));io.unobserve(en.target)}})},{threshold:.5});[].forEach.call(ads,function(a){io.observe(a)})}}catch(e){}
 /* 一覧ページ */
 var f=document.getElementById('flt');
 if(f){

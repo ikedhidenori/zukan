@@ -316,3 +316,30 @@ details.bkd summary{position:relative;display:block;padding:8px 40px 8px 14px}de
 .qcards li.mine{border:3px solid var(--vm);background:#F8EFE0}
 .qcards li.mine::after{content:"あなたの職種はここ";font-size:14px;font-weight:800;color:var(--vm)}
 .qcards b{word-break:keep-all;overflow-wrap:normal}
+
+/* ===== v3.2 SNS ===== */
+.foot .sns{display:flex;flex-wrap:wrap;align-items:center;gap:0 6px;margin:6px 0 2px;font-size:14px;color:var(--ink);font-weight:800}
+.foot .sns span{margin-right:4px}
+.foot .sns a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border:1px solid var(--ink);color:var(--ink);text-decoration:none;font-weight:800;margin:2px 0}
+.snsb{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.snsb a{display:flex;align-items:center;justify-content:center;min-height:52px;border:1px solid var(--ink);background:var(--card);color:var(--ink);font-weight:800;text-decoration:none}
+.snsn{margin:14px 0 0;font-size:15px;line-height:1.7}.snsn a{display:inline-block;padding:11px 2px;margin:-11px 0}
+.snsb a:last-child:nth-child(odd){grid-column:1/-1}
+@media(min-width:700px){.snsb{grid-template-columns:repeat(5,1fr)}.snsb a:last-child:nth-child(odd){grid-column:auto}}
+
+.snsn{margin:14px 0 0}
+.snsb a:last-child:nth-child(odd){grid-column:auto}
+.snsb{grid-template-columns:repeat(3,1fr)}
+@media(max-width:699px){.foot .sns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.foot .sns span{grid-column:1/-1;margin:0}.foot .sns a{justify-content:center;margin:0}.foot .sns a:last-child:nth-child(odd){grid-column:1/-1}}
+@media(min-width:700px){.snsb{grid-template-columns:repeat(3,1fr)}}
+
+/* ===== v3.3 広告カード ===== */
+.ad{margin:28px 0 0;border:2px dashed var(--sub);background:#E9DDBF;padding:12px 14px 14px}
+.adsep{margin:0 0 6px;font-size:14px;color:var(--sub);font-weight:700;line-height:1.5}
+.adc{margin-top:10px;padding:12px;background:var(--card);border:1px solid var(--line)}
+.adc p{margin:0}.adn{font-weight:800;font-size:1.05rem;line-height:1.4}.adw{font-size:14px;color:var(--sub);margin-top:2px!important;line-height:1.5}
+.adr{font-size:15px;line-height:1.6;margin-top:6px!important}.adcond{font-size:14px;font-weight:800;margin-top:6px!important;line-height:1.5}
+.adbtn{display:flex;align-items:center;justify-content:center;min-height:48px;margin-top:10px;padding:0 12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-weight:800;text-decoration:none;text-align:center}
+.adbtn:hover{background:#fff8e6}
+.ad p a{display:flex;padding:0;margin:0}
+.b2b{margin:18px 0 0;font-size:15px;line-height:1.7;color:var(--sub)}.b2b a{color:var(--sub);display:inline-block;padding:11px 0;margin:-11px 0}
