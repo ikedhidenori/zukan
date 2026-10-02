@@ -89,6 +89,7 @@ function find(k0){let k=k0.replace(/(サン|サマ|チャン|サマ)$/,'')||k0;i
 const SHIGYO=['薬剤師','税理士','通関士','公認会計士','司法書士','土地家屋調査士','測量士','社会保険労務士','行政書士','不動産鑑定士','看護師','弁理士'];
 const ARTS=[[SHIGYO,'https://note.com/zukan_jp/n/nb8872a9fd3ad','士業・国家資格12職種、AIに置き換わりやすいのはどれか','result_shigyo'],[["一般事務", "調剤薬局事務", "医療事務", "郵便局郵便窓口業務", "通信販売受付事務", "経理事務", "貿易事務", "銀行等窓口事務", "介護事務", "出荷・受荷事務", "受付事務", "総務事務"],'https://note.com/zukan_jp/n/nfb6f3f372c13','事務職12職種、AIに置き換わりやすいのはどれか','result_office12'],[["調剤薬局事務", "医療事務", "検疫官（看護師）", "介護事務", "薬剤師", "歯科助手", "看護助手", "医薬品販売/登録販売者", "歯科技工士", "医薬品製造", "歯科衛生士", "動物看護"],'https://note.com/zukan_jp/n/nef02beae1470','医療・介護の12職種、AIに置き換わりやすいのはどれか','result_medical12']];
 const ART=d=>{const a=ARTS.filter(x=>x[0].includes(d.j));return a.length?`<p class="art">この分野の詳しい記録:${a.map(([l,url,title,c])=>`<br><a href="${url}?utm_source=zukan.page&amp;utm_medium=referral&amp;utm_campaign=${c}">${title}(note・無料)</a>`).join('')}</p>`:''};
+const PAGE=d=>`<p class="art"><a href="/j/${String(d.r).padStart(3,'0')}.html">${d.j}のページを開く(順位の見方・前後の職種)</a></p>`;
 const TIER=x=>x>=38?0:x>=20?1:x>=4?2:3;
 const SAY=['仕事の中身が、定型・反復・正確さに大きく寄っています。置き換わりやすい側です。','定型の部分が多めです。定型の作業から先に機械へ移っていく側です。','定型と、人にしかできない部分が混ざっています。真ん中あたりです。','創造・対人・交渉・身体を使う部分が多く、置き換わりにくい側です。'];
 const ADS=d=>{const t=TIER(d.x);let items=[];
@@ -102,7 +103,7 @@ function show(d,o={}){const pct=(d.r-1)/(N-1)*100;const t=TIER(d.x);
  const near=D.slice(Math.max(0,d.r-3),Math.min(N,d.r+2)).map(x=>`<li class="${x.r==d.r?'me':''}"${x.r==d.r?' aria-current="true"':''}><span>${x.r}位 ${x.j}</span><span>指数 ${x.x}</span></li>`).join('');
  $('#out').innerHTML=`<div class="res" id="res" tabindex="-1" role="region" aria-label="${d.j}の結果"><h2>${d.j}</h2><div class="big"><div><i class="${t===0?'':'n'}">${d.r}<span style="font-size:1.1rem">位</span></i><u>405職種中の順位<br><span class="nw">(1位が最も</span><span class="nw">置き換わりやすい)</span></u></div><div><i class="${t===0?'':'n'}">${d.x}</i><u>置換指数<br><span class="nw">(1位=100・</span><span class="nw">マイナスは</span><span class="nw">置き換わりにくい側)</span></u></div></div>
  <div class="bar"><span style="left:calc(${pct}% - 2px)"></span></div><div class="cap"><span>置き換わりやすい</span><span>置き換わりにくい</span></div>
- <p class="say">${SAY[t]}</p><p class="src">推定です。出典: JILPT 職業情報データベース v7 から絶滅職種図鑑が算出。</p><p class="src" id="nearh">前後の順位の職種(右は置換指数)</p><ul class="near" aria-labelledby="nearh">${near}</ul>${ART(d)}${ADS(d)}</div>`;
+ <p class="say">${SAY[t]}</p><p class="src">推定です。出典: JILPT 職業情報データベース v7 から絶滅職種図鑑が算出。</p><p class="src" id="nearh">前後の順位の職種(右は置換指数)</p><ul class="near" aria-labelledby="nearh">${near}</ul>${PAGE(d)}${ART(d)}${ADS(d)}</div>`;
  $('#hit').innerHTML='';q.value=d.j;document.title=`${d.j}は405職種中${d.r}位｜絶滅職種図鑑`;
  setUrl((o.keepQuery?location.pathname+location.search:location.pathname)+'#'+encodeURIComponent(d.j),o.push);
  if(o.scroll!==false)requestAnimationFrame(()=>{const r=$('#res');if(r)r.scrollIntoView({behavior:o.instant?'auto':'smooth',block:'start'})});
