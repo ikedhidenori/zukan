@@ -343,3 +343,13 @@ details.bkd summary{position:relative;display:block;padding:8px 40px 8px 14px}de
 .adbtn:hover{background:#fff8e6}
 .ad p a{display:flex;padding:0;margin:0}
 .b2b{margin:18px 0 0;font-size:15px;line-height:1.7;color:var(--sub)}.b2b a{color:var(--sub);display:inline-block;padding:11px 0;margin:-11px 0}
+.seats.sw .sv{display:block;font-size:14px;font-weight:800;margin-top:2px}
+.seats.sw .sv{display:inline;margin-left:6px;font-size:15px}.seats.sw small{margin-left:6px;color:var(--sub)}
+.ba .bign{font-size:2.6rem;color:var(--vm);margin-left:6px}
+.ba .bac,.ba .stay3{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.ba .bac li{border:1px solid var(--ink);background:var(--card);padding:10px 14px;line-height:1.5}
+.ba .bar2{font-weight:800;margin:2px 0}
+.ba .stay3 li{padding:2px 0 2px 14px;position:relative}.ba .stay3 li::before{content:"・";position:absolute;left:0}
+.ba .why{font-size:14px;color:var(--sub);margin:2px 0}
+.ba .src{font-size:13px;color:var(--sub);margin:4px 0 0}
+.ba .dn{color:var(--vm);border-bottom:2px solid var(--vm)}.ba .ok{font-weight:800}

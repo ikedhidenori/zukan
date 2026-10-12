@@ -49,7 +49,7 @@ async function show(d,o={}){
   markMap(d);
   history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(d.j));
   if(o.scroll!==false)requestAnimationFrame(()=>{const r=$('#res');if(r)r.scrollIntoView({behavior:o.instant?'auto':'smooth',block:'start'})});
-  ga('job_lookup',{job_name:d.j,job_band:d.b?BS[d.b-1]:''});
+  ga('job_lookup',{job_name:d.j,job_band:d.b?BS[d.b-1]:'',source:(function(){var m=/[?&]utm_source=([^&]+)/.exec(location.search);return m?decodeURIComponent(m[1]):(/Instagram/i.test(navigator.userAgent)?'ig-inapp':'direct')})(),entry:o.guess?'guess':(o.entry||'search')});
 }
 function markMap(d){const svg=document.querySelector('#scat svg');if(!svg)return;
   svg.querySelectorAll('circle.me').forEach(c=>c.classList.remove('me'));svg.querySelectorAll('.melab').forEach(t=>t.remove());
@@ -100,7 +100,7 @@ document.addEventListener('click',e=>{
 function fromHash(){
   let h=decodeURIComponent(location.hash.slice(1)||'');const m=/[?&]q=([^&]+)/.exec(location.search);if(!h&&m)h=decodeURIComponent(m[1]);
   if(!h)return;let d=D.find(x=>x.j===h);if(!d){const l=find(norm(h)).list;if(l.length)d=l[0]}
-  if(d)show(d,{instant:true})}
+  if(d)show(d,{instant:true,entry:'hash'})}
 window.addEventListener('hashchange',fromHash);
 fromHash();
 /* 散布図: 押した位置に近い点を選び、職種へのリンクを出す */

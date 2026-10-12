@@ -15,10 +15,12 @@ function saveImg(img,name){
     if(navigator.canShare&&navigator.canShare({files:[f]})){return navigator.share({files:[f]}).catch(function(){})}
     var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},4000);toast('画像を保存しました');
   }).catch(function(){toast('画像を保存できませんでした')})}
+/* 職種ページを開いた(流入元つき)。トップの job_lookup と合わせて「入口→結果」を追う */
+try{var pg=document.querySelector('.pg[data-job]');if(pg)ga('job_view',{job_name:pg.dataset.job,job_band:pg.dataset.band||'',source:src()})}catch(e){}
 document.addEventListener('click',function(e){
   var ad=e.target.closest('a[data-ad]');if(ad){ga('ad_click',adp(ad));return}
   var sn=e.target.closest('a[data-sns]');if(sn){ga('sns_click',{platform:sn.dataset.sns,place:sn.dataset.place||''});return}
-  var st=e.target.closest('a[data-seat]');if(st){ga('seat_click',{seat_kind:st.dataset.seat,to:st.querySelector('b')?st.querySelector('b').textContent:''})}
+  var st=e.target.closest('a[data-seat]');if(st){ga('seat_click',{seat_kind:st.dataset.seat,to:st.querySelector('b')?st.querySelector('b').textContent:'',job_name:(document.querySelector('.pg[data-job]')||{dataset:{}}).dataset.job||(document.querySelector('#res .jn')||{}).textContent||'',source:src()})}
   var b=e.target.closest('[data-act]');if(!b)return;
   var s=b.closest('.share');if(!s)return;
   var url=s.dataset.url,text=s.dataset.text,job=s.dataset.job||'',act=b.dataset.act;
